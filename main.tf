@@ -59,8 +59,8 @@ resource "aws_dynamodb_table" "awsbroker_table" {
     non_key_attributes = [
       "id",
       "userid",
-      "type",
       "locked",
+      "type",
     ]
   }
 }
