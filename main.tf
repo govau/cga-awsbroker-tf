@@ -23,7 +23,21 @@ resource "aws_route53_record" "broker_db_txt" {
     "enabled=1",
     "tablename=${aws_dynamodb_table.awsbroker_table.name}",
     "iamusername=${aws_iam_user.awsbroker.name}",
+    "templatebucket=${aws_s3_bucket.templates.bucket}",
   ]
+}
+
+resource "aws_s3_bucket" "templates" {
+  bucket_prefix = "${var.name}cld-awsbroker-"
+  acl           = "private"
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
 }
 
 resource "aws_dynamodb_table" "awsbroker_table" {
@@ -77,6 +91,17 @@ data "aws_iam_policy_document" "create_awsbroker_access" {
     actions   = ["iam:CreateAccessKey"]
     resources = ["${aws_iam_user.awsbroker.arn}"]
   }
+
+  statement {
+    actions = [
+      "s3:*",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.templates.arn}/*",
+      "${aws_s3_bucket.templates.arn}",
+    ]
+  }
 }
 
 resource "aws_iam_user" "awsbroker" {
@@ -97,8 +122,8 @@ data "aws_iam_policy_document" "run_as_broker" {
     ]
 
     resources = [
-      "arn:aws:s3:::awsservicebroker/templates/*",
-      "arn:aws:s3:::awsservicebroker",
+      "${aws_s3_bucket.templates.arn}/templates/*",
+      "${aws_s3_bucket.templates.arn}",
     ]
   }
 
