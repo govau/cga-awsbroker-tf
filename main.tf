@@ -209,6 +209,7 @@ data "aws_iam_policy_document" "manage_service_instances" {
       "ec2:*",
       "iam:*",
       "lambda:*",
+      "secretsmanager:*",
     ]
 
     resources = [
