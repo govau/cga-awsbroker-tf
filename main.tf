@@ -88,7 +88,11 @@ resource "aws_iam_role_policy" "bosh_jumpbox" {
 
 data "aws_iam_policy_document" "create_awsbroker_access" {
   statement {
-    actions   = ["iam:CreateAccessKey"]
+    actions = [
+      "iam:CreateAccessKey",
+      "iam:ListAccessKeys",
+    ]
+
     resources = ["${aws_iam_user.awsbroker.arn}"]
   }
 
