@@ -90,6 +90,7 @@ data "aws_iam_policy_document" "create_awsbroker_access" {
   statement {
     actions = [
       "iam:CreateAccessKey",
+      "iam:DeleteAccessKey",
       "iam:ListAccessKeys",
     ]
 
