@@ -188,6 +188,7 @@ data "aws_iam_policy_document" "manage_service_instances" {
       "cloudformation:CreateStack",
       "cloudformation:DeleteStack",
       "cloudformation:DescribeStacks",
+      "cloudformation:DescribeStackEvents",
       "cloudformation:UpdateStack",
       "cloudformation:CancelUpdateStack",
     ]
